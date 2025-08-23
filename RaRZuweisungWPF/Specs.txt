@@ -1,0 +1,28 @@
+﻿Specifications for RaRZuweisung:
+
+Use Cases:
+->Resetting the Database
+->Enter new paricipants
+->Create next Round
+-->next 2 person round
+-->next 3 Person round
+-->show next Round
+->change participants availability
+
+Idea:
+Create all rounds at once with the given availabilty and if the availability changes
+then change the affected Round so that it won't clash/will clash the least with other unchanged rounds.
+
+ToDos:
+-Make View draft
+-Make View logic
+-Make View fetch data
+-Make Database (all in one db file (SQLLite))
+-Make Model to Database Access
+-Make Business Logic in Controller
+-Make assignment Logic in Model
+-Make Model and Controller Interfaces
+-Maybe make inversion of Control
+-Maybe make tests?
+
+-> have fun
