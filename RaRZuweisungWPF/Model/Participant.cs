@@ -13,5 +13,17 @@ namespace RaRZuweisungWPF.Model
         public string Name { get; set; }
 
         public Dictionary<int, bool> Availability { get; set; }
+
+        public Participant(string name, bool old, bool available1, bool available2, bool available3, bool available4, bool available5)
+        { 
+            Name = name;
+            Availability = new Dictionary<int, bool>();
+            Old = old;
+            Availability.Add(1, available1);
+            Availability.Add(2, available2);
+            Availability.Add(3, available3);
+            Availability.Add(4, available4);
+            Availability.Add(5, available5);
+        }
     }
 }

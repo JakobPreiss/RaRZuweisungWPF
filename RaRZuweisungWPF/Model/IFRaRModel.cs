@@ -8,7 +8,7 @@ namespace RaRZuweisungWPF.Model
 {
     public interface IFRaRModel
     {
-        void newParticipant(string name, bool old);
+        void newParticipant(string name, bool old, bool available1, bool available2, bool available3, bool available4, bool available5);
 
         void deleteParticipant(Participant participant);
 

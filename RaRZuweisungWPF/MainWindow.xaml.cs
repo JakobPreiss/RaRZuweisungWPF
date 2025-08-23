@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using RaRZuweisungWPF.Controller;
+using RaRZuweisungWPF.Model;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -19,6 +21,8 @@ namespace RaRZuweisungWPF
         public MainWindow()
         {
             InitializeComponent();
+            TheBigC c = new TheBigC();
+            TuiTextBlock.Text=  c.exampleMethod();
         }
     }
 }

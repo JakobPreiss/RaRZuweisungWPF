@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RaRZuweisungWPF.Controller
 {
-    internal class IFController
+    internal interface IFController
     {
     }
 }

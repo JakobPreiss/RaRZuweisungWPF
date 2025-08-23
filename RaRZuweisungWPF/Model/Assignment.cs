@@ -13,9 +13,6 @@ namespace RaRZuweisungWPF.Model
             throw new NotImplementedException();
         }
 
-        private void stest()
-        {
-            
-        }
+
     }
 }

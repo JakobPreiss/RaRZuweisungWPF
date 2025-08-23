@@ -13,5 +13,15 @@ namespace RaRZuweisungWPF.Model
         public Participant? newParticipant;
 
         public Participant? EitherParticipant;
+
+        public int round;
+
+        public RaR3(Participant? oldParticipant, Participant? newParticipant, Participant eitherparticipant, int round)
+        {
+            this.oldParticipant = oldParticipant;
+            this.newParticipant = newParticipant;
+            this.round = round;
+            EitherParticipant = eitherparticipant;
+        }
     }
 }

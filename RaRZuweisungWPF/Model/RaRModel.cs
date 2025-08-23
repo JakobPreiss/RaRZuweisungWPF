@@ -8,6 +8,11 @@ namespace RaRZuweisungWPF.Model
 {
     public class RaRModel : IFRaRModel
     {
+
+        public string exampleMethod()
+        {
+            return "TEst";
+        }
         public void changeAvailability(Participant participant, int round)
         {
             DataBaseAccess.setAvailability(participant, round);
@@ -40,7 +45,7 @@ namespace RaRZuweisungWPF.Model
 
         public void newParticipant(string name, bool old, bool available1, bool available2, bool available3, bool available4, bool available5)
         {
-            DataBaseAccess.writeParticipant();
+            DataBaseAccess.writeParticipant(new Participant(name, old, available1, available2, available3, available4, available5));
             throw new NotImplementedException();
         }
 
@@ -49,5 +54,7 @@ namespace RaRZuweisungWPF.Model
             DataBaseAccess.resetDataBase();
             throw new NotImplementedException();
         }
+
+        
     }
 }

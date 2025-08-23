@@ -69,7 +69,7 @@ namespace RaRZuweisungWPF.Model
 
         }
 
-        public void resetDataBase()
+        public static void resetDataBase()
         {
 
         }
