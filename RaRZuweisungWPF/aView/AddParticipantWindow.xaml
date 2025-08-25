@@ -29,14 +29,14 @@
         <TextBox x:Name="NameGiver" Grid.Row="1" Grid.Column="3"/>
         <Label x:Name="OldLabel" Content="Is Old:" Grid.Column="1"  Grid.Row="3"/>
         <CheckBox x:Name="OldCheckBox" Content="" Grid.Column="3" Grid.Row="3"/>
-        <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3">
+        <StackPanel x:Name="StackPanelCheckBoxes" Orientation="Horizontal" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3">
             <CheckBox Content="1. Runde" IsChecked="True" Margin="0,0,10,0"/>
             <CheckBox Content="2. Runde" IsChecked="True" Margin="0,0,10,0"/>
             <CheckBox Content="3. Runde" IsChecked="True" Margin="0,0,10,0"/>
             <CheckBox Content="4. Runde" IsChecked="True" Margin="0,0,10,0"/>
             <CheckBox Content="5. Runde" IsChecked="True" Margin="0,0,10,0"/>
         </StackPanel>
-        <Button x:Name="AddParticipant" Content="Add Participant" Grid.Column="3" Grid.Row="6"/>
+        <Button x:Name="AddParticipant" Content="Add Participant" Grid.Column="3" Grid.Row="6" Click="AddParticipant_Click"/>
 
 
     </Grid>

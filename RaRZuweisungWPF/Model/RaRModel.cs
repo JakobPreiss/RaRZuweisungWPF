@@ -8,61 +8,66 @@ namespace RaRZuweisungWPF.Model
 {
     public class RaRModel : IFRaRModel
     {
+        private DataBaseAccess access;
 
-        public string exampleMethod()
+        public RaRModel()
         {
-            return "TEst";
+            access = new DataBaseAccess();
         }
         public void changeAvailability(Participant participant, int round)
         {
-            DataBaseAccess.setAvailability(participant, round);
+            access.changeAvailability(participant, round);
         }
 
-        public void createNextRound(int round)
+        public void createNextRound(int round, bool is2Round)
         {
-            Assignment.createNextRound(round);
+            Assignment.createNextRound(round, is2Round);
+            throw new NotImplementedException();
         }
 
         public void deleteParticipant(Participant participant)
         {
-            DataBaseAccess.deleteParticipant(participant);
-            throw new NotImplementedException();
+            access.deleteParticipant(participant);
         }
 
         public List<RaR2> getRaR2Round(int round)
         {
-            DataBaseAccess.readRaR2Round(round);
-            throw new NotImplementedException();
+            return access.readRaR2Round(round);
         }
 
         public List<RaR3> getRaR3Round(int round)
         {
-            DataBaseAccess.readRaR3Round(round);
-            throw new NotImplementedException();
+            return access.readRaR3Round(round);
         }
 
-        public void newParticipant(string name, bool old, bool available1, bool available2, bool available3, bool available4, bool available5)
+        public void newParticipant(Participant participant)
         {
-            DataBaseAccess.writeParticipant(new Participant(name, old, available1, available2, available3, available4, available5));
-            throw new NotImplementedException();
+            access.writeParticipant(participant);
+        }
+
+        public void changeParticipant(Participant participant, string name, bool old, Dictionary<int, bool> availability)
+        {
+            access.changeParticipant(participant, name, old, availability);
         }
 
         public void resetDatabase()
         {
-            DataBaseAccess.resetDataBase();
-            throw new NotImplementedException();
+            access.resetDataBase();
         }
 
         public void changeRaRRoundManually(int round, RaR2 rarToBeChanged, string name1, string name2)
         {
-            DataBaseAccess.changeRaRRound(round, rarToBeChanged, name1, name2);
-            throw new NotImplementedException();
+            access.changeRaRRound(round, rarToBeChanged, name1, name2);
         }
 
         public void changeRaRRoundManually(int round, RaR3 rarToBeChanged, string name1, string name2, string name3)
         {
-            DataBaseAccess.changeRaRRound(round, rarToBeChanged, name1, name2, name3);
-            throw new NotImplementedException();
+            access.changeRaRRound(round, rarToBeChanged, name1, name2, name3);
+        }
+
+        public List<Participant> getAllParticipants()
+        {
+            return access.readParticipants();
         }
     }
 }

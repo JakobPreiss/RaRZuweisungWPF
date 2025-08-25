@@ -1,9 +1,9 @@
-﻿<Window x:Class="RaRZuweisungWPF.MainWindow"
+﻿<Window x:Class="RaRZuweisungWPF.aView.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:RaRZuweisungWPF"
+        xmlns:local="clr-namespace:RaRZuweisungWPF.aView"
         mc:Ignorable="d"
         Title="MainWindow" Height="420" Width="900">
     <Grid>
@@ -65,7 +65,7 @@
         <DataGrid x:Name="DataGridParticipants" Grid.Row="1" Grid.Column="3" Grid.RowSpan="11" Grid.ColumnSpan="12" AutoGenerateColumns="False"
                   SelectionMode="Single" SelectionUnit="FullRow" CanUserAddRows="False" IsReadOnly="True" MinRowHeight="40" Visibility="Hidden">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Participant" Binding="{Binding Name}" Width="300"/>
+                <DataGridTextColumn Header="Participant" Binding="{Binding Name}" Width="300"  />
                 <DataGridTextColumn Header="R1" Binding="{Binding Availability[1]}" Width="50"/>
                 <DataGridTextColumn Header="R2" Binding="{Binding Availability[2]}" Width="50"/>
                 <DataGridTextColumn Header="R3" Binding="{Binding Availability[3]}" Width="50"/>

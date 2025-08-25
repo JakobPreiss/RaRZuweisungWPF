@@ -8,7 +8,7 @@ namespace RaRZuweisungWPF.Model
 {
     public interface IFRaRModel
     {
-        void newParticipant(string name, bool old, bool available1, bool available2, bool available3, bool available4, bool available5);
+        void newParticipant(Participant participant);
 
         void deleteParticipant(Participant participant);
 
@@ -18,13 +18,17 @@ namespace RaRZuweisungWPF.Model
 
         List<RaR3> getRaR3Round(int round);
 
-        void createNextRound(int round);
+        void createNextRound(int round, bool is2round);
 
         void resetDatabase();
+
+        List<Participant> getAllParticipants();
 
         void changeRaRRoundManually(int round, RaR2 rarToBeChanged, string name1, string name2);
 
         void changeRaRRoundManually(int round, RaR3 rarToBeChanged, string name1, string name2, string name3);
+
+        void changeParticipant(Participant participant, string name, bool old, Dictionary<int, bool> availability);
 
     }
 }

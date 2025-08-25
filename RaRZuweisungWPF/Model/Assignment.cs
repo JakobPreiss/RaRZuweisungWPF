@@ -14,7 +14,7 @@ namespace RaRZuweisungWPF.Model
         /// </summary>
         /// <param name="round">indicated round to be created</param>
         /// <exception cref="NotImplementedException"></exception>
-        internal static void createNextRound(int round)
+        internal static void createNextRound(int round, bool is2Round)
         {
             throw new NotImplementedException();
         }

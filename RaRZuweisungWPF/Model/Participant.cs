@@ -25,5 +25,14 @@ namespace RaRZuweisungWPF.Model
             Availability.Add(4, available4);
             Availability.Add(5, available5);
         }
+
+        public override bool Equals(object? obj)
+        {
+            if(obj is Participant p)
+            {
+                return p.Name.Equals(this.Name);
+            }
+            return false;
+        }
     }
 }

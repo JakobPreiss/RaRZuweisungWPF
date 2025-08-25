@@ -1,4 +1,5 @@
-﻿using RaRZuweisungWPF.Model;
+﻿using RaRZuweisungWPF.aView;
+using RaRZuweisungWPF.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +12,13 @@ namespace RaRZuweisungWPF.Controller
     {
         public List<Participant> GetParticipants();
 
-        public bool AddParticipant(Participant participant);
+        public void AddParticipant(Participant participant);
 
-        public bool RemoveParticipant(Participant participant);
+        public void RemoveParticipant(Participant participant);
 
-        public bool changeParticipant(Participant participant, string name, bool old, Dictionary<int, bool> availability);
+        public void changeParticipant(Participant participant, string name, bool old, Dictionary<int, bool> availability);
 
-        public bool resetDatabase();
+        public void resetDatabase();
 
         public List<RaR2> getRaR2Round(int round);
 
@@ -25,9 +26,10 @@ namespace RaRZuweisungWPF.Controller
 
         public bool checkIfRoundIs2(int round);
 
-        public bool createRound(int round, bool isRaR2Rund);
+        public void createRound(int round, bool isRaR2Rund);
+        void Notify();
 
-        
+
         //die beiden vielleicht al letztes implementieren (Optional, weil könnte stuff sehr kompliziert machen)
         public bool changePairing(int  round, Participant oldRoundParticipant, string name1, string name2, string name3);
 
