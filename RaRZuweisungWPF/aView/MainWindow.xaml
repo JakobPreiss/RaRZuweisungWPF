@@ -56,32 +56,44 @@
         <Button x:Name="Change_Pairing" Content="Change Pairing" Grid.Column="16" Grid.Row="11" Click="Change_Round_Click"/>
         <Button x:Name="Reset_DataBase" Content="Reset Database" Grid.Column="1" Grid.Row="11" Height="50" VerticalAlignment="Top" Click="Reset_DataBase_Click"/>
 
-        <Label x:Name="ParticipantLabel" Content="Participants" Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="6"/>
-        <Label x:Name="AvailableLabel1" Content="Round1" Grid.Column="9" Grid.Row="1"/>
-        <Label x:Name="AvailableLabel2" Content="Round2" Grid.Column="10" Grid.Row="1"/>
-        <Label x:Name="AvailableLabel3" Content="Round3" Grid.Column="11" Grid.Row="1"/>
-        <Label x:Name="AvailableLabel4" Content="Round4" Grid.Column="12" Grid.Row="1"/>
-        <Label x:Name="AvailableLabel5" Content="Round5" Grid.Column="13" Grid.Row="1"/>
         <Label x:Name="FirstRaR3Label" Content="1. Person" Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="4" Visibility="Hidden"/>
         <Label x:Name="SecondRaR3Label" Content="2. Person" Grid.Column="7" Grid.Row="1" Grid.ColumnSpan="4" Visibility="Hidden"/>
         <Label x:Name="ThirdRaR3Label" Content="3. Person" Grid.Column="11" Grid.Row="1" Grid.ColumnSpan="4" Visibility="Hidden"/>
         <Label x:Name="FirstRaR2Label" Content="1. Person" Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="6" Visibility="Hidden"/>
         <Label x:Name="SecondRaR2Label" Content="2. Person" Grid.Column="9" Grid.Row="1" Grid.ColumnSpan="4" Visibility="Hidden"/>
 
-        <TextBlock x:Name="Participants" Grid.Column="3" Grid.Row="2" Grid.RowSpan="9" Grid.ColumnSpan="6"/>
-        <TextBlock x:Name="AvailablilityTextBlock1" Grid.Column="9" Grid.Row="2" Grid.RowSpan="9"/>
-        <TextBlock x:Name="AvailablilityTextBlock2" Grid.Column="10" Grid.Row="2" Grid.RowSpan="9"/>
-        <TextBlock x:Name="AvailablilityTextBlock3" Grid.Column="11" Grid.Row="2" Grid.RowSpan="9"/>
-        <TextBlock x:Name="AvailablilityTextBlock4" Grid.Column="12" Grid.Row="2" Grid.RowSpan="9"/>
-        <TextBlock x:Name="AvailablilityTextBlock5" Grid.Column="13" Grid.Row="2" Grid.RowSpan="9"/>
+        <DataGrid x:Name="DataGridParticipants" Grid.Row="1" Grid.Column="3" Grid.RowSpan="11" Grid.ColumnSpan="12" AutoGenerateColumns="False"
+                  SelectionMode="Single" SelectionUnit="FullRow" CanUserAddRows="False" IsReadOnly="True" MinRowHeight="40" Visibility="Hidden">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Participant" Binding="{Binding Name}" Width="300"/>
+                <DataGridTextColumn Header="R1" Binding="{Binding Availability[1]}" Width="50"/>
+                <DataGridTextColumn Header="R2" Binding="{Binding Availability[2]}" Width="50"/>
+                <DataGridTextColumn Header="R3" Binding="{Binding Availability[3]}" Width="50"/>
+                <DataGridTextColumn Header="R4" Binding="{Binding Availability[4]}" Width="50"/>
+                <DataGridTextColumn Header="R5" Binding="{Binding Availability[5]}" Width="50"/>
+                <DataGridTextColumn Header="Old" Binding="{Binding Old}" Width="50"/>
+            </DataGrid.Columns>
 
+        </DataGrid>
 
-        <TextBlock x:Name="FirstRaR3Person" Grid.Column="3" Grid.Row="2" Grid.RowSpan="9" Grid.ColumnSpan="4"/>
-        <TextBlock x:Name="SecondRaR3Person" Grid.Column="7" Grid.Row="2" Grid.RowSpan="9" Grid.ColumnSpan="4"/>
-        <TextBlock x:Name="ThirdRaR3Person" Grid.Column="11" Grid.Row="2" Grid.RowSpan="9" Grid.ColumnSpan="4"/>
+        <DataGrid x:Name="DataGridRaR2" Grid.Row="1" Grid.Column="3" Grid.RowSpan="11" Grid.ColumnSpan="12" AutoGenerateColumns="False"
+          SelectionMode="Single" SelectionUnit="FullRow" CanUserAddRows="False" IsReadOnly="True" MinRowHeight="40" Visibility="Hidden">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Participant 1" Binding="{Binding NewParticipant.Name}" Width="300"/>
+                <DataGridTextColumn Header="Participant 2" Binding="{Binding OldParticipant.Name}" Width="300"/>
+            </DataGrid.Columns>
 
-        <TextBlock x:Name="FirstRaR2Person" Grid.Column="3" Grid.Row="2" Grid.RowSpan="9" Grid.ColumnSpan="6"/>
-        <TextBlock x:Name="SecondRaR2Person" Grid.Column="3" Grid.Row="2" Grid.RowSpan="9" Grid.ColumnSpan="6"/>
+        </DataGrid>
+
+        <DataGrid x:Name="DataGridRaR3" Grid.Row="1" Grid.Column="3" Grid.RowSpan="11" Grid.ColumnSpan="12" AutoGenerateColumns="False"
+                SelectionMode="Single" SelectionUnit="FullRow" CanUserAddRows="False" IsReadOnly="True" MinRowHeight="40" Visibility="Hidden">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Participant 1" Binding="{Binding OldParticipant.Name}" Width="200"/>
+                <DataGridTextColumn Header="Participant 2" Binding="{Binding NewParticipant.Name}" Width="200"/>
+                <DataGridTextColumn Header="Participant 3" Binding="{Binding EitherParticipant.Name}" Width="200"/>
+            </DataGrid.Columns>
+
+        </DataGrid>
 
     </Grid>
 </Window>

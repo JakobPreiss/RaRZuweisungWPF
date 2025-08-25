@@ -8,19 +8,19 @@ namespace RaRZuweisungWPF.Model
 {
     public record RaR3
     {
-        public Participant? oldParticipant;
+        public Participant? OldParticipant { get; set; }
 
-        public Participant? newParticipant;
+        public Participant? NewParticipant { get; set; }
 
-        public Participant? EitherParticipant;
+        public Participant? EitherParticipant { get; set; }
 
-        public int round;
+        public int Round {  get; set; }
 
         public RaR3(Participant? oldParticipant, Participant? newParticipant, Participant eitherparticipant, int round)
         {
-            this.oldParticipant = oldParticipant;
-            this.newParticipant = newParticipant;
-            this.round = round;
+            OldParticipant = oldParticipant;
+            NewParticipant = newParticipant;
+            Round = round;
             EitherParticipant = eitherparticipant;
         }
     }
