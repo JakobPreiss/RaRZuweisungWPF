@@ -24,5 +24,55 @@ namespace RaRZuweisungWPF
             TheBigC c = new TheBigC();
             TuiTextBlock.Text=  c.exampleMethod();
         }
+
+        private void Show_Participants_Click(object sender, RoutedEventArgs e)
+        {
+       
+        }
+
+        private void Add_Particpant_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Remove_Participant_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Change_Participant_Window_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Change_Availability_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Reset_DataBase_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Show_Round_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Create2er_Round_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Create3er_Round_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Change_Round_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

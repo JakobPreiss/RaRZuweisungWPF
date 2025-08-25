@@ -5,19 +5,83 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RaRZuweisungWPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="420" Width="900">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="15"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="15"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="15"/>
+            <ColumnDefinition Width="120"/>
             <ColumnDefinition Width="15"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="15"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="15"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="15"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="15"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="15"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="15"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="15"/>
         </Grid.RowDefinitions>
-        <TextBlock x:Name="TuiTextBlock" Grid.Column="1" Grid.Row="1"/>
+        <TextBlock x:Name="TuiTextBlock" Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="12" Grid.RowSpan="10"/>
+        <Button x:Name="Show_Participants" Content="Show Participants" Grid.Column="1" Grid.Row="1" Click="Show_Participants_Click"/>
+        <Button x:Name="Add_Particpant" Content="Add Participant" Grid.Column="1" Grid.Row="3" Click="Add_Particpant_Click"/>
+        <Button x:Name="Change_Participant_Window_Open" Content="Change Participant" Grid.Column="1" Grid.Row="5" Click="Change_Participant_Window_Click"/>
+        <Button x:Name="Change_Availability" Content="Change Availability" Grid.Column="1" Grid.Row="7" Click="Change_Availability_Click"/>
+        <Button x:Name="Remove_Participant" Content="Remove Participant" Grid.Column="1" Grid.Row="9" Click="Remove_Participant_Click"/>
+        <Label Content="Enter Round:" Grid.Row="1" Grid.Column="16"/>
+        <TextBox x:Name="Round_Indicator" Grid.Row="3" Grid.Column="16" />
+        <Button x:Name="Show_Round" Content="Show Round" Grid.Column="16" Grid.Row="5" Click="Show_Round_Click"/>
+        <Button x:Name="Create2er_Round" Content="Create 2-er Round" Grid.Column="16" Grid.Row="7" Click="Create2er_Round_Click"/>
+        <Button x:Name="Create3er_Round" Content="Create 3-er Round" Grid.Column="16" Grid.Row="9" Click="Create3er_Round_Click"/>
+        <Button x:Name="Change_Pairing" Content="Change Pairing" Grid.Column="16" Grid.Row="11" Click="Change_Round_Click"/>
+        <Button x:Name="Reset_DataBase" Content="Reset Database" Grid.Column="1" Grid.Row="11" Height="50" VerticalAlignment="Top" Click="Reset_DataBase_Click"/>
+
+        <Label x:Name="ParticipantLabel" Content="Participants" Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="6"/>
+        <Label x:Name="AvailableLabel1" Content="Round1" Grid.Column="9" Grid.Row="1"/>
+        <Label x:Name="AvailableLabel2" Content="Round2" Grid.Column="10" Grid.Row="1"/>
+        <Label x:Name="AvailableLabel3" Content="Round3" Grid.Column="11" Grid.Row="1"/>
+        <Label x:Name="AvailableLabel4" Content="Round4" Grid.Column="12" Grid.Row="1"/>
+        <Label x:Name="AvailableLabel5" Content="Round5" Grid.Column="13" Grid.Row="1"/>
+        <Label x:Name="FirstRaR3Label" Content="1. Person" Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="4" Visibility="Hidden"/>
+        <Label x:Name="SecondRaR3Label" Content="2. Person" Grid.Column="7" Grid.Row="1" Grid.ColumnSpan="4" Visibility="Hidden"/>
+        <Label x:Name="ThirdRaR3Label" Content="3. Person" Grid.Column="11" Grid.Row="1" Grid.ColumnSpan="4" Visibility="Hidden"/>
+        <Label x:Name="FirstRaR2Label" Content="1. Person" Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="6" Visibility="Hidden"/>
+        <Label x:Name="SecondRaR2Label" Content="2. Person" Grid.Column="9" Grid.Row="1" Grid.ColumnSpan="4" Visibility="Hidden"/>
+
+        <TextBlock x:Name="Participants" Grid.Column="3" Grid.Row="2" Grid.RowSpan="9" Grid.ColumnSpan="6"/>
+        <TextBlock x:Name="AvailablilityTextBlock1" Grid.Column="9" Grid.Row="2" Grid.RowSpan="9"/>
+        <TextBlock x:Name="AvailablilityTextBlock2" Grid.Column="10" Grid.Row="2" Grid.RowSpan="9"/>
+        <TextBlock x:Name="AvailablilityTextBlock3" Grid.Column="11" Grid.Row="2" Grid.RowSpan="9"/>
+        <TextBlock x:Name="AvailablilityTextBlock4" Grid.Column="12" Grid.Row="2" Grid.RowSpan="9"/>
+        <TextBlock x:Name="AvailablilityTextBlock5" Grid.Column="13" Grid.Row="2" Grid.RowSpan="9"/>
+
+
+        <TextBlock x:Name="FirstRaR3Person" Grid.Column="3" Grid.Row="2" Grid.RowSpan="9" Grid.ColumnSpan="4"/>
+        <TextBlock x:Name="SecondRaR3Person" Grid.Column="7" Grid.Row="2" Grid.RowSpan="9" Grid.ColumnSpan="4"/>
+        <TextBlock x:Name="ThirdRaR3Person" Grid.Column="11" Grid.Row="2" Grid.RowSpan="9" Grid.ColumnSpan="4"/>
+
+        <TextBlock x:Name="FirstRaR2Person" Grid.Column="3" Grid.Row="2" Grid.RowSpan="9" Grid.ColumnSpan="6"/>
+        <TextBlock x:Name="SecondRaR2Person" Grid.Column="3" Grid.Row="2" Grid.RowSpan="9" Grid.ColumnSpan="6"/>
 
     </Grid>
 </Window>

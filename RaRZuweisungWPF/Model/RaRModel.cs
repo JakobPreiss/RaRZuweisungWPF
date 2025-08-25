@@ -16,13 +16,11 @@ namespace RaRZuweisungWPF.Model
         public void changeAvailability(Participant participant, int round)
         {
             DataBaseAccess.setAvailability(participant, round);
-            throw new NotImplementedException();
         }
 
-        public void createNextRound(int round, int numberOfParticipants)
+        public void createNextRound(int round)
         {
-            Assignment.createNextRound(round, numberOfParticipants);
-            throw new NotImplementedException();
+            Assignment.createNextRound(round);
         }
 
         public void deleteParticipant(Participant participant)
@@ -55,6 +53,16 @@ namespace RaRZuweisungWPF.Model
             throw new NotImplementedException();
         }
 
-        
+        public void changeRaRRoundManually(int round, RaR2 rarToBeChanged, string name1, string name2)
+        {
+            DataBaseAccess.changeRaRRound(round, rarToBeChanged, name1, name2);
+            throw new NotImplementedException();
+        }
+
+        public void changeRaRRoundManually(int round, RaR3 rarToBeChanged, string name1, string name2, string name3)
+        {
+            DataBaseAccess.changeRaRRound(round, rarToBeChanged, name1, name2, name3);
+            throw new NotImplementedException();
+        }
     }
 }

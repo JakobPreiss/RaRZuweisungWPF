@@ -8,10 +8,18 @@ Use Cases:
 -->next 3 Person round
 -->show next Round
 ->change participants availability
+->change a RaR round manually
 
 Idea:
 Create all rounds at once with the given availabilty and if the availability changes
 then change the affected Round so that it won't clash/will clash the least with other unchanged rounds.
+-> better with little availability changes
+
+Other Idea:
+Create all rounds at once with the given availabilty and if the availability changes
+then change the affected Round and calculate the next rounds so that it has very litte doubling in the other rounds.
+->more flexible
+--> probably better
 
 ToDos:
 -Make View draft
