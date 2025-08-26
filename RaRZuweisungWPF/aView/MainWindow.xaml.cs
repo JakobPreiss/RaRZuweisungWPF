@@ -100,12 +100,33 @@ namespace RaRZuweisungWPF.aView
 
         private void Show_Round_Click(object sender, RoutedEventArgs e)
         {
-
+            int round;
+            if (int.TryParse(Round_Indicator.Text, out round))  
+            {
+                if(controller.checkIfRoundIs2(round))
+                {
+                    DataGridRaR2.ItemsSource = controller.getRaR2Round(round);
+                    DataGridParticipants.Visibility = Visibility.Hidden;
+                    DataGridRaR2.Visibility = Visibility.Hidden;
+                    DataGridRaR2.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    DataGridRaR3.ItemsSource = controller.getRaR3Round(round);
+                    DataGridParticipants.Visibility = Visibility.Hidden;
+                    DataGridRaR2.Visibility= Visibility.Hidden;
+                    DataGridRaR3.Visibility = Visibility.Visible;
+                }
+            } else
+            {
+                MessageBox.Show("Enter the Round first (upper right corner)");
+            }
+            
         }
 
         private void Create_Rounds(object sender, RoutedEventArgs e)
         {
-
+            controller.createRounds();
         }
 
         private void SetRoundPlan(object sender, RoutedEventArgs e)

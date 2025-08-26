@@ -19,6 +19,7 @@ namespace RaRZuweisungWPF.Controller
         {
             this.model = new RaRModel();
             this.mainWindow = mw;
+            this.ErrorMessage = "";
         }
         public void AddParticipant(Participant participant)
         {
@@ -73,7 +74,7 @@ namespace RaRZuweisungWPF.Controller
             }
         }
 
-        public void createRounds(int round, bool isRaR2Rund)
+        public void createRounds()
         {
             model.createRounds();
         }
@@ -96,11 +97,9 @@ namespace RaRZuweisungWPF.Controller
         {
             try
             {
-                if (model.getRaR2Round(round).Count == 0)
-                {
-                    throw new Exception("Es wurden noch keine RaR2 Runden erstellt.");
-                }
-                return model.getRaR2Round(round);
+                List<RaR2> rar2s = model.getRaR2Round(round);
+                if(rar2s.Count > 0) { return rar2s; }
+                throw new Exception("Es wurde noch keine RaR Runde erstellt.");
             }
             catch (Exception ex)
             {
@@ -112,12 +111,10 @@ namespace RaRZuweisungWPF.Controller
 
         public List<RaR3> getRaR3Round(int round)
         {
-            try { 
-                if (model.getRaR3Round(round).Count == 0)
-                {
-                    throw new Exception("Es wurden noch keine RaR3 Runden erstellt.");
-                }
-                return model.getRaR3Round(round);
+            try {
+                List<RaR3> rar3s = model.getRaR3Round(round);
+                if (rar3s.Count > 0) { return rar3s; }
+                throw new Exception("Es wurde noch keine RaR Runden erstellt.");
             }
             catch (Exception ex)
             {

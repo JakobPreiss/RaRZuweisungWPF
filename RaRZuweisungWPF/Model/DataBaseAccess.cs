@@ -183,7 +183,10 @@ namespace RaRZuweisungWPF.Model
                     {
                         while (reader.Read())
                         {
-                            rars.Add(new RaR2(readParticipant(reader.GetString(0)), readParticipant(reader.GetString(1)), round));
+                            RaR2 rar2 = new RaR2(readParticipant(reader.GetString(0)), readParticipant(reader.GetString(1)), round);
+                            if (rar2.OldParticipant == null) { throw new Exception($"Participant {rar2.OldParticipant} was deleted"); }
+                            if (rar2.NewParticipant == null) { throw new Exception($"Participant {rar2.NewParticipant} was deleted"); }
+                            rars.Add(rar2);
                         }
                         return rars;
                     }
@@ -210,7 +213,10 @@ namespace RaRZuweisungWPF.Model
                     {
                         while (reader.Read())
                         {
-                            rars.Add(new RaR3(readParticipant(reader.GetString(0)), readParticipant(reader.GetString(1)), readParticipant(reader.GetString(2)), round));
+                            RaR3 rar3 = new RaR3(readParticipant(reader.GetString(0)), readParticipant(reader.GetString(1)), readParticipant(reader.GetString(2)), round)
+                            if (rar3.OldParticipant == null) { throw new Exception($"Participant {rar3.OldParticipant} was deleted"); }
+                            if (rar3.NewParticipant == null) { throw new Exception($"Participant {rar3.NewParticipant} was deleted"); }
+                            rars.Add(rar3);
                         }
                         return rars;
                     }
@@ -308,7 +314,9 @@ namespace RaRZuweisungWPF.Model
                         while (reader.Read())
                         {
                             Participant p1 = readParticipant(reader.GetString(0));
+                            if (p1 == null) { throw new Exception($"Participant {p1.Name} was deleted"); }
                             Participant p2 = readParticipant(reader.GetString(1));
+                            if (p2 == null) { throw new Exception($"Participant {p2.Name} was deleted"); }
                             pairings.Add(p1, p2);
                             pairings.Add(p2, p1);
                         }
