@@ -9,19 +9,21 @@ namespace RaRZuweisungWPF.Model
     public class RaRModel : IFRaRModel
     {
         private DataBaseAccess access;
+        private Assignment assignment;
 
         public RaRModel()
         {
             access = new DataBaseAccess();
+            assignment = new Assignment(access);
         }
         public void changeAvailability(Participant participant, int round)
         {
             access.changeAvailability(participant, round);
         }
 
-        public void createNextRound(int round, bool is2Round)
+        public void createRounds()
         {
-            Assignment.createNextRound(round, is2Round);
+            assignment.createRounds();
             throw new NotImplementedException();
         }
 
@@ -68,6 +70,11 @@ namespace RaRZuweisungWPF.Model
         public List<Participant> getAllParticipants()
         {
             return access.readParticipants();
+        }
+
+        public void setRoundPlan(bool[] areRounds2er)
+        {
+            access.setRoundPlan(areRounds2er);
         }
     }
 }

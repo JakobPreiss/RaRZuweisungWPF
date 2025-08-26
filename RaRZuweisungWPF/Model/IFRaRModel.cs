@@ -18,11 +18,13 @@ namespace RaRZuweisungWPF.Model
 
         List<RaR3> getRaR3Round(int round);
 
-        void createNextRound(int round, bool is2round);
+        void createRounds();
 
         void resetDatabase();
 
         List<Participant> getAllParticipants();
+
+        public void setRoundPlan(bool[] areRounds2er);
 
         void changeRaRRoundManually(int round, RaR2 rarToBeChanged, string name1, string name2);
 

@@ -51,8 +51,8 @@
         <Label Content="Enter Round:" Grid.Row="1" Grid.Column="16"/>
         <TextBox x:Name="Round_Indicator" Grid.Row="3" Grid.Column="16" />
         <Button x:Name="Show_Round" Content="Show Round" Grid.Column="16" Grid.Row="5" Click="Show_Round_Click"/>
-        <Button x:Name="Create2er_Round" Content="Create 2-er Round" Grid.Column="16" Grid.Row="7" Click="Create2er_Round_Click"/>
-        <Button x:Name="Create3er_Round" Content="Create 3-er Round" Grid.Column="16" Grid.Row="9" Click="Create3er_Round_Click"/>
+        <Button x:Name="Create_Rounds" Content="Create Rounds" Grid.Column="16" Grid.Row="7" Click="Create_Rounds"/>
+        <Button x:Name="Round_Plan" Content="Plannung Rounds" Grid.Column="16" Grid.Row="9" Click="SetRoundPlan"/>
         <Button x:Name="Change_Pairing" Content="Change Pairing" Grid.Column="16" Grid.Row="11" Click="Change_Round_Click"/>
         <Button x:Name="Reset_DataBase" Content="Reset Database" Grid.Column="1" Grid.Row="11" Height="50" VerticalAlignment="Top" Click="Reset_DataBase_Click"/>
 

@@ -293,7 +293,7 @@ namespace RaRZuweisungWPF.Model
             finally { if (connection != null) { connection.Close(); } }
         }
 
-        public Dictionary<Participant, Participant> readPairings(Participant participant)
+        public Dictionary<Participant, Participant> readPairings()
         {
             try
             {
@@ -461,6 +461,68 @@ namespace RaRZuweisungWPF.Model
                     command.Parameters.AddWithValue("@olda4", oldavailable[3]);
                     command.Parameters.AddWithValue("@olda5", oldavailable[4]);
                     command.ExecuteNonQuery();
+                }
+            }
+            finally
+            {
+                if (connection != null) { connection.Close(); }
+            }
+        }
+
+        internal void setRoundPlan(bool[] areRounds2er)
+        {
+            try
+            {
+                using (connection)
+                {
+                    connection.Open();
+                    var command = connection.CreateCommand();
+                    command.CommandText = @"INSERT INTO RoundPlan (RoundPlanId, Rounds) VALUES (1, '@r1@r2@r2@r3@r4@r5') ON CONFLICT(ID) DO UPDATE SET Rounds = '@r1@r2@r2@r3@r4@r5';";
+                    int[] roundplan = { 0, 0, 0, 0, 0 };
+                    if (areRounds2er.Length != 5)
+                    {
+                        throw new Exception("wron array length on roundplan");
+                    }
+                    foreach (bool b in areRounds2er)
+                    {
+                        if (b) { roundplan[0] = 1; }
+                    }
+                    command.Parameters.AddWithValue("@r1", roundplan[0]);
+                    command.Parameters.AddWithValue("@r2", roundplan[1]);
+                    command.Parameters.AddWithValue("@r3", roundplan[2]);
+                    command.Parameters.AddWithValue("@r4", roundplan[3]);
+                    command.Parameters.AddWithValue("@r5", roundplan[4]);
+                    command.ExecuteNonQuery();
+                }
+            }
+            finally
+            {
+                if (connection != null) { connection.Close(); }
+            }
+        }
+
+        internal bool[] getRoundPlan()
+        {
+            try
+            {
+                using (connection)
+                {
+                    connection.Open();
+                    var command = connection.CreateCommand();
+                    command.CommandText = @"Select Rounds from RoundPlan Where RoundPlanId = 1";
+                    bool[] roundplan = new bool[5];
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string rounds = reader.GetString(0);
+                            for (int i = 0; i < 5; i++)
+                            {
+                                roundplan[i] = rounds.Substring(i, 1) == "1";
+                            }
+                        }
+                    }
+                    return roundplan;
                 }
             }
             finally

@@ -26,8 +26,10 @@ namespace RaRZuweisungWPF.Controller
 
         public bool checkIfRoundIs2(int round);
 
-        public void createRound(int round, bool isRaR2Rund);
+        public void createRounds(int round, bool isRaR2Rund);
         void Notify();
+
+        public void setRoundPlan(bool[] areRounds2er);
 
 
         //die beiden vielleicht al letztes implementieren (Optional, weil könnte stuff sehr kompliziert machen)

@@ -73,9 +73,9 @@ namespace RaRZuweisungWPF.Controller
             }
         }
 
-        public void createRound(int round, bool isRaR2Rund)
+        public void createRounds(int round, bool isRaR2Rund)
         {
-            model.createNextRound(round, isRaR2Rund);
+            model.createRounds();
         }
 
         public List<Participant> GetParticipants()
@@ -149,6 +149,11 @@ namespace RaRZuweisungWPF.Controller
                 ErrorMessage = ex.Message;
                 Notify();
             }
+        }
+
+        public void setRoundPlan(bool[] areRounds2er)
+        {
+            model.setRoundPlan(areRounds2er);
         }
     }
 }

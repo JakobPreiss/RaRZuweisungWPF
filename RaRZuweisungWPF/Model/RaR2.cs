@@ -6,19 +6,24 @@ using System.Threading.Tasks;
 
 namespace RaRZuweisungWPF.Model
 {
-    public record RaR2
+    public record RaR2 : RaR
     {
-        public Participant? OldParticipant { get; set; }
+        public Participant OldParticipant { get; set; }
 
-        public Participant? NewParticipant {  get; set; }
+        public Participant NewParticipant {  get; set; }
 
         public int Round { get; set; }
 
-        public RaR2(Participant? oldParticipant, Participant? newParticipant, int round)
+        public RaR2(Participant oldParticipant, Participant newParticipant, int round)
         { 
             OldParticipant = oldParticipant;
             NewParticipant = newParticipant;
             Round = round;
+        }
+
+        public List<Participant> GetParticipants()
+        {
+            return new List<Participant> { OldParticipant, NewParticipant};
         }
     }
 }

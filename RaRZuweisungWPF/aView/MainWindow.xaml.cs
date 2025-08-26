@@ -103,14 +103,15 @@ namespace RaRZuweisungWPF.aView
 
         }
 
-        private void Create2er_Round_Click(object sender, RoutedEventArgs e)
+        private void Create_Rounds(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void Create3er_Round_Click(object sender, RoutedEventArgs e)
+        private void SetRoundPlan(object sender, RoutedEventArgs e)
         {
-
+            RoundPlan roundplan = new RoundPlan(controller);
+            roundplan.Show();
         }
 
         public void displayErrorMessage(string message)
