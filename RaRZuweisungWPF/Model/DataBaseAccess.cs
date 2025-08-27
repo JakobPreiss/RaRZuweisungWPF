@@ -212,7 +212,7 @@ namespace RaRZuweisungWPF.Model
                 {
                     connection.Open();
                     var command = connection.CreateCommand();
-                    command.CommandText = @"select P1.ParticipantName, P2.ParticipantName, P3.ParticipantName from RaR3 inner join Participant as P1 on RaR3.Participant1 = P1.ParticipantName inner join Participant as P2 on RaR3.Participant2 = P2.ParticipantName inner join Participant as P3 on RaR3.Participant3 = P3.ParticipantName where RaR3.RaRRound = @Round;";
+                    command.CommandText = @"select Participant1, Participant2, Participant3 from RaR3 where RaR3.RaRRound = @Round;";
                     command.Parameters.AddWithValue("@Round", round);
                     List<RaR3> rars = new List<RaR3>();
                     using (var reader = command.ExecuteReader())
@@ -282,7 +282,13 @@ namespace RaRZuweisungWPF.Model
                         command.CommandText = @"insert into RaR3 (Participant1, Participant2, Participant3, RaRRound) values(@P1, @P2, @P3, @Round);";
                         command.Parameters.AddWithValue("@P1", rar.OldParticipant.Name);
                         command.Parameters.AddWithValue("@P2", rar.NewParticipant.Name);
-                        command.Parameters.AddWithValue("@P3", rar.EitherParticipant.Name);
+                        if (rar.EitherParticipant == null)
+                        {
+                            command.Parameters.AddWithValue("@P3", "Null");
+                        } else
+                        {
+                            command.Parameters.AddWithValue("@P3", rar.EitherParticipant.Name);
+                        }
                         command.Parameters.AddWithValue("@Round", round);
                         command.ExecuteNonQuery();
                         command.Parameters.Clear();

@@ -43,7 +43,7 @@ namespace RaRZuweisungWPF.aView
                 new Participant("Fabienne", true, true, true, true, true, true),
                 new Participant("Eline", true, true, true, true, true, true),
 
-                new Participant("Konstantin", false, true, true, true, true, true),
+                //new Participant("Konstantin", false, true, true, true, true, true),
                 new Participant("Kirsten", false, true, true, true, true, true),
                 new Participant("Janis", false, true, true, true, true, true),
                 new Participant("Alex", false, true, true, true, true, true),
@@ -54,7 +54,7 @@ namespace RaRZuweisungWPF.aView
                 new Participant("jana", false, true, true, true, true, true),
                 new Participant("Anja", false, true, true, true, true, true),
                 new Participant("Klaus", false, true, true, true, true, true),
-                new Participant("Viktor", false, true, true, true, true, true)
+                //new Participant("Viktor", false, true, true, true, true, true)
             };
 
             foreach (Participant participant in testParticipants)
@@ -171,8 +171,11 @@ namespace RaRZuweisungWPF.aView
 
         private void Create_Rounds_Click(object sender, RoutedEventArgs e)
         {
-
+            CreatingRoundsWindow crw = new CreatingRoundsWindow();
+            crw.Show();
+            crw.changeText("Creating Rounds");
             controller.createRounds();
+            crw.changeText("Rounds created");
             DataGridParticipants.Visibility = Visibility.Hidden;
         }
 

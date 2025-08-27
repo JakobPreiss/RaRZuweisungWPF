@@ -1,0 +1,26 @@
+﻿<Window x:Class="RaRZuweisungWPF.aView.CreatingRoundsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RaRZuweisungWPF.aView"
+        mc:Ignorable="d"
+        Title="CreatingRoundsWindow" Height="150" Width="250">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <Label x:Name="CreatingInfos" Grid.Column="1" Grid.Row="1" HorizontalContentAlignment="Center"/>
+        <Button x:Name="Closing" Content="Close" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" Visibility="Hidden" Click="Closing_Click"/>
+
+    </Grid>
+</Window>
