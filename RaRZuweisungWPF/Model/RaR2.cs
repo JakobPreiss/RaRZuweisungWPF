@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RaRZuweisungWPF.Model
 {
-    public record RaR2 : RaR
+    public record RaR2 : IFRaR
     {
         public Participant OldParticipant { get; set; }
 

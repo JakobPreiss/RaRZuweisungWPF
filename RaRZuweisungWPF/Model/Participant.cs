@@ -30,9 +30,15 @@ namespace RaRZuweisungWPF.Model
         {
             if(obj is Participant p)
             {
-                return p.Name.Equals(this.Name);
+                Participant participant = (Participant)obj;
+                return participant.Name.Equals(this.Name);
             }
             return false;
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

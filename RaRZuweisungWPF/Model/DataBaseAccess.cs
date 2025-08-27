@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.OleDb;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -38,8 +39,6 @@ namespace RaRZuweisungWPF.Model
                     connection.Close();
                 }
             }
-
-
 
         }
         public void writeParticipant(Participant participant)
@@ -111,12 +110,13 @@ namespace RaRZuweisungWPF.Model
 
         public List<Participant> readParticipants()
         {
+            var connectionParticipant = new SqliteConnection(connectionstring);
             try
             {
-                using (connection)
+                using (connectionParticipant)
                 {
-                    connection.Open();
-                    var command = connection.CreateCommand();
+                    connectionParticipant.Open();
+                    var command = connectionParticipant.CreateCommand();
                     command.CommandText = @"select ParticipantName, Old, Available1, Available2, Available3, Available2, Available5 from Participant;";
                     List<Participant> participants = new List<Participant>();
                     using (var reader = command.ExecuteReader())
@@ -136,36 +136,38 @@ namespace RaRZuweisungWPF.Model
                     }
                 }
             }
-            finally { if (connection != null) { connection.Close(); } }
+            finally { if (connectionParticipant != null) { connectionParticipant.Close(); } }
         }
 
         private Participant readParticipant(string name)
         {
+            var connectionParticipant = new SqliteConnection(connectionstring);
             try
             {
-                using (connection)
+                using (connectionParticipant)
                 {
-                    connection.Open();
-                    var command = connection.CreateCommand();
-                    command.CommandText = @"select Old, Available1, Available2, Available3, Available2, Available5 from Participant where ParticipantName = @name;";
+                    connectionParticipant.Open();
+                    var command = connectionParticipant.CreateCommand();
+                    command.CommandText = @"select Old, Available1, Available2, Available3, Available4, Available5 from Participant where ParticipantName = @name;";
+                    command.Parameters.AddWithValue("@name", name);
                     using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            bool old = reader.GetInt32(1) == 1;
+                            bool old = reader.GetInt32(0) == 1;
                             bool[] available = new bool[5];
-                            available[0] = reader.GetInt32(2) == 1;
-                            available[1] = reader.GetInt32(3) == 1;
-                            available[2] = reader.GetInt32(4) == 1;
-                            available[3] = reader.GetInt32(5) == 1;
-                            available[4] = reader.GetInt32(6) == 1;
+                            available[0] = reader.GetInt32(1) == 1;
+                            available[1] = reader.GetInt32(2) == 1;
+                            available[2] = reader.GetInt32(3) == 1;
+                            available[3] = reader.GetInt32(4) == 1;
+                            available[4] = reader.GetInt32(5) == 1;
                             return new Participant(name, old, available[0], available[1], available[2], available[3], available[4]);
                         }
                         return null;
                     }
                 }
             }
-            finally { if (connection != null) { connection.Close(); } }
+            finally { if (connectionParticipant != null) { connectionParticipant.Close(); } }
         }
 
         public List<RaR2> readRaR2Round(int round)
@@ -176,16 +178,20 @@ namespace RaRZuweisungWPF.Model
                 {
                     connection.Open();
                     var command = connection.CreateCommand();
-                    command.CommandText = @"select P1.ParticipantName, P2.ParticipantName from RaR2 inner join Participant as P1 on RaR2.Participant1 = P1.ParticipantName inner join Participant as P2 on RaR2.Participant2 = P2.ParticipantName where RaR2.Round = @Round;";
+                    command.CommandText = @"select P1.ParticipantName, P2.ParticipantName from RaR2 inner join Participant as P1 on RaR2.Participant1 = P1.ParticipantName inner join Participant as P2 on RaR2.Participant2 = P2.ParticipantName where RaR2.RaRRound = @Round;";
                     command.Parameters.AddWithValue("@Round", round);
                     List<RaR2> rars = new List<RaR2>();
                     using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            RaR2 rar2 = new RaR2(readParticipant(reader.GetString(0)), readParticipant(reader.GetString(1)), round);
-                            if (rar2.OldParticipant == null) { throw new Exception($"Participant {rar2.OldParticipant} was deleted"); }
-                            if (rar2.NewParticipant == null) { throw new Exception($"Participant {rar2.NewParticipant} was deleted"); }
+                            string oldName = reader.GetString(0);
+                            string newName = reader.GetString(1);
+                            Participant old = readParticipant(oldName);
+                            Participant newbie = readParticipant(newName);
+                            if (old == null) { throw new Exception($"Participant {old} was deleted"); }
+                            if (newbie == null) { throw new Exception($"Participant {old} was deleted"); }
+                            RaR2 rar2 = new RaR2(old, newbie, round);
                             rars.Add(rar2);
                         }
                         return rars;
@@ -206,14 +212,24 @@ namespace RaRZuweisungWPF.Model
                 {
                     connection.Open();
                     var command = connection.CreateCommand();
-                    command.CommandText = @"select P1.ParticipantName, P2.ParticipantName P3.Participants from RaR3 inner join Participant as P1 on RaR2.Participant1 = P1.ParticipantName inner join Participant as P2 on RaR2.Participant2 = P2.ParticipantName inner join Participant as P3 on RaR2.Participant3 = P3.ParticipantName where RaR3.Round = @Round;";
+                    command.CommandText = @"select P1.ParticipantName, P2.ParticipantName, P3.ParticipantName from RaR3 inner join Participant as P1 on RaR3.Participant1 = P1.ParticipantName inner join Participant as P2 on RaR3.Participant2 = P2.ParticipantName inner join Participant as P3 on RaR3.Participant3 = P3.ParticipantName where RaR3.RaRRound = @Round;";
                     command.Parameters.AddWithValue("@Round", round);
                     List<RaR3> rars = new List<RaR3>();
                     using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            RaR3 rar3 = new RaR3(readParticipant(reader.GetString(0)), readParticipant(reader.GetString(1)), readParticipant(reader.GetString(2)), round)
+                            string eitherName = reader.GetString(2);
+                            string oldName = reader.GetString(0);
+                            string newName = reader.GetString(1);
+                            RaR3 rar3;
+                            if(eitherName == null)
+                            {
+                                rar3 = new RaR3(readParticipant(oldName), readParticipant(newName), null, round);
+                            } else
+                            {
+                                rar3 = new RaR3(readParticipant(oldName), readParticipant(newName), readParticipant(eitherName), round);
+                            }
                             if (rar3.OldParticipant == null) { throw new Exception($"Participant {rar3.OldParticipant} was deleted"); }
                             if (rar3.NewParticipant == null) { throw new Exception($"Participant {rar3.NewParticipant} was deleted"); }
                             rars.Add(rar3);
@@ -238,7 +254,7 @@ namespace RaRZuweisungWPF.Model
                     var command = connection.CreateCommand();
                     foreach (RaR2 rar in rars)
                     {
-                        command.CommandText = @"insert into RaR2 values(@P1, @P2, @Round);";
+                        command.CommandText = @"insert into RaR2 (Participant1, Participant2, RaRRound) values(@P1, @P2, @Round);";
                         command.Parameters.AddWithValue("@P1", rar.OldParticipant.Name);
                         command.Parameters.AddWithValue("@P2", rar.NewParticipant.Name);
                         command.Parameters.AddWithValue("@Round", round);
@@ -263,7 +279,7 @@ namespace RaRZuweisungWPF.Model
                     var command = connection.CreateCommand();
                     foreach (RaR3 rar in rars)
                     {
-                        command.CommandText = @"insert into RaR3 values(@P1, @P2, @P3, @Round);";
+                        command.CommandText = @"insert into RaR3 (Participant1, Participant2, Participant3, RaRRound) values(@P1, @P2, @P3, @Round);";
                         command.Parameters.AddWithValue("@P1", rar.OldParticipant.Name);
                         command.Parameters.AddWithValue("@P2", rar.NewParticipant.Name);
                         command.Parameters.AddWithValue("@P3", rar.EitherParticipant.Name);
@@ -278,28 +294,29 @@ namespace RaRZuweisungWPF.Model
 
         public void deleteRaR(int round)
         {
+            var deleteRaRconnection = new SqliteConnection(connectionstring);
             try
             {
-                using (connection)
+                using (deleteRaRconnection)
                 {
-                    connection.Open();
-                    var command = connection.CreateCommand();
+                    deleteRaRconnection.Open();
+                    var command = deleteRaRconnection.CreateCommand();
                     if (readRaR2Round(round).Count == 0)
                     {
-                        command.CommandText = @"delete from RaR3 where Round = @round;";
+                        command.CommandText = @"delete from RaR3 where RaRRound = @round;";
                     }
                     else
                     {
-                        command.CommandText = @"delete from RaR2 where Round = @round;";
+                        command.CommandText = @"delete from RaR2 where RaRRound = @round;";
                     }
                     command.Parameters.AddWithValue("@round", round);
                     command.ExecuteNonQuery();
                 }
             }
-            finally { if (connection != null) { connection.Close(); } }
+            finally { if (deleteRaRconnection != null) { deleteRaRconnection.Close(); } }
         }
 
-        public Dictionary<Participant, Participant> readPairings()
+        public Dictionary<string, List<Participant>> readPairings()
         {
             try
             {
@@ -308,7 +325,8 @@ namespace RaRZuweisungWPF.Model
                     connection.Open();
                     var command = connection.CreateCommand();
                     command.CommandText = @"select Participant1, Participant2 from Pairing;";
-                    Dictionary<Participant, Participant> pairings = new Dictionary<Participant, Participant>();
+                    Dictionary<string, List<Participant>> pairings = new Dictionary<string, List<Participant>>();
+                    List<Participant> participants = readParticipants();
                     using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())
@@ -317,8 +335,38 @@ namespace RaRZuweisungWPF.Model
                             if (p1 == null) { throw new Exception($"Participant {p1.Name} was deleted"); }
                             Participant p2 = readParticipant(reader.GetString(1));
                             if (p2 == null) { throw new Exception($"Participant {p2.Name} was deleted"); }
-                            pairings.Add(p1, p2);
-                            pairings.Add(p2, p1);
+                            List<Participant>? tempValueList1;
+                            if(pairings.TryGetValue(p1.Name, out tempValueList1))
+                            {
+                                if (!tempValueList1.Contains(p2))
+                                {
+                                    tempValueList1.Add(p2);
+                                    pairings[p1.Name] = tempValueList1;
+                                }
+                            } else
+                            {
+                                pairings.Add(p1.Name, new List<Participant> { p2 });
+                            }
+                            List<Participant>? tempValueList2;
+                            if (pairings.TryGetValue(p2.Name, out tempValueList2))
+                            {
+                                if (!tempValueList2.Contains(p1))
+                                {
+                                    tempValueList2.Add(p1);
+                                    pairings[p1.Name] = tempValueList2;
+                                }
+                            }
+                            else
+                            {
+                                pairings.Add(p2.Name, new List<Participant> { p1 });
+                            }
+                        }
+                    }
+                    foreach(Participant participant in participants)
+                    {
+                        if(!pairings.ContainsKey(participant.Name))
+                        {
+                            pairings.Add(participant.Name, new List<Participant>());
                         }
                     }
                     return pairings;
@@ -335,7 +383,7 @@ namespace RaRZuweisungWPF.Model
                 {
                     connection.Open();
                     var command = connection.CreateCommand();
-                    command.CommandText = @"insert into Pairing values (@name1, @name2);";
+                    command.CommandText = @"insert into Pairing (Participant1, Participant2) values (@name1, @name2);";
                     command.Parameters.AddWithValue("@name1", participant2.Name);
                     command.Parameters.AddWithValue("@name2", participant1.Name);
                     command.ExecuteNonQuery();
@@ -344,7 +392,7 @@ namespace RaRZuweisungWPF.Model
             finally { if (connection != null) { connection.Close(); } }
         }
 
-        public void deletePairing(Participant participant1, Participant participant2)
+        public void deletePairing(string participant1Name, Participant participant2)
         {
             try
             {
@@ -354,11 +402,30 @@ namespace RaRZuweisungWPF.Model
                     var command = connection.CreateCommand();
                     command.CommandText = @"delete from Pairing where (Participant1 = @name1 And Participant2 = @name2) OR (Participant2 = @name1 And Participant1 = @name2);";
                     command.Parameters.AddWithValue("@name1", participant2.Name);
-                    command.Parameters.AddWithValue("@name2", participant1.Name);
+                    command.Parameters.AddWithValue("@name2", participant1Name);
                     command.ExecuteNonQuery();
                 }
             }
             finally { if (connection != null) { connection.Close(); } }
+        }
+
+        public void resetRaRsAndPairs()
+        {
+            try
+            {
+                using(connection)
+                {
+                    connection.Open();
+                    using var command = connection.CreateCommand();
+                    var dropSql = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "dropRaRsAndPairs.sql"));
+                    command.CommandText = dropSql;
+                    command.ExecuteNonQuery();
+                    var createSql = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "blueprint.sql"));
+                    command.CommandText = createSql;
+                    command.ExecuteNonQuery();
+                }
+            }
+            finally{ if (connection != null) { connection.Close(); } }
         }
 
         public void resetDataBase()
@@ -485,21 +552,20 @@ namespace RaRZuweisungWPF.Model
                 {
                     connection.Open();
                     var command = connection.CreateCommand();
-                    command.CommandText = @"INSERT INTO RoundPlan (RoundPlanId, Rounds) VALUES (1, '@r1@r2@r2@r3@r4@r5') ON CONFLICT(ID) DO UPDATE SET Rounds = '@r1@r2@r2@r3@r4@r5';";
+                    command.CommandText = @"INSERT INTO RoundPlan (RoundPlanId, Rounds) VALUES (1, @rounds) ON CONFLICT(RoundPlanId) DO UPDATE SET Rounds = excluded.Rounds;";
                     int[] roundplan = { 0, 0, 0, 0, 0 };
                     if (areRounds2er.Length != 5)
                     {
-                        throw new Exception("wron array length on roundplan");
+                        throw new Exception("wrong array length on roundplan");
                     }
+                    int i = 0;
                     foreach (bool b in areRounds2er)
                     {
-                        if (b) { roundplan[0] = 1; }
+                        if (b) { roundplan[i] = 1; }
+                        i++;
                     }
-                    command.Parameters.AddWithValue("@r1", roundplan[0]);
-                    command.Parameters.AddWithValue("@r2", roundplan[1]);
-                    command.Parameters.AddWithValue("@r3", roundplan[2]);
-                    command.Parameters.AddWithValue("@r4", roundplan[3]);
-                    command.Parameters.AddWithValue("@r5", roundplan[4]);
+                    string roundsString = string.Join("", roundplan);
+                    command.Parameters.AddWithValue("@rounds", roundsString);
                     command.ExecuteNonQuery();
                 }
             }

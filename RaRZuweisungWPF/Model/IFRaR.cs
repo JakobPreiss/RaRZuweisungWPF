@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RaRZuweisungWPF.Model
 {
-    internal interface RaR
+    internal interface IFRaR
     {
         public List<Participant> GetParticipants();
     }

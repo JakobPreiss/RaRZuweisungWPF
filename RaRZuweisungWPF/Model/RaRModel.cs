@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RaRZuweisungWPF.Controller;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,11 +11,13 @@ namespace RaRZuweisungWPF.Model
     {
         private DataBaseAccess access;
         private Assignment assignment;
+        private TheBigC controller;
 
-        public RaRModel()
+        public RaRModel(TheBigC c)
         {
             access = new DataBaseAccess();
-            assignment = new Assignment(access);
+            assignment = new Assignment(access, this);
+            controller = c;
         }
         public void changeAvailability(Participant participant, int round)
         {
@@ -24,7 +27,6 @@ namespace RaRZuweisungWPF.Model
         public void createRounds()
         {
             assignment.createRounds();
-            throw new NotImplementedException();
         }
 
         public void deleteParticipant(Participant participant)
@@ -75,6 +77,11 @@ namespace RaRZuweisungWPF.Model
         public void setRoundPlan(bool[] areRounds2er)
         {
             access.setRoundPlan(areRounds2er);
+        }
+
+        public void textPrint(string text)
+        {
+            controller.textShow(text);
         }
     }
 }

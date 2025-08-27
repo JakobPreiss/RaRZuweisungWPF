@@ -51,8 +51,8 @@
         <Label Content="Enter Round:" Grid.Row="1" Grid.Column="16"/>
         <TextBox x:Name="Round_Indicator" Grid.Row="3" Grid.Column="16" />
         <Button x:Name="Show_Round" Content="Show Round" Grid.Column="16" Grid.Row="5" Click="Show_Round_Click"/>
-        <Button x:Name="Create_Rounds" Content="Create Rounds" Grid.Column="16" Grid.Row="7" Click="Create_Rounds"/>
-        <Button x:Name="Round_Plan" Content="Plannung Rounds" Grid.Column="16" Grid.Row="9" Click="SetRoundPlan"/>
+        <Button x:Name="Create_Rounds" Content="Create Rounds" Grid.Column="16" Grid.Row="7" Click="Create_Rounds_Click" />
+        <Button x:Name="Round_Plan" Content="Planning Rounds" Grid.Column="16" Grid.Row="9" Click="SetRoundPlan"/>
         <Button x:Name="Change_Pairing" Content="Change Pairing" Grid.Column="16" Grid.Row="11" Click="Change_Round_Click"/>
         <Button x:Name="Reset_DataBase" Content="Reset Database" Grid.Column="1" Grid.Row="11" Height="50" VerticalAlignment="Top" Click="Reset_DataBase_Click"/>
 
@@ -65,13 +65,13 @@
         <DataGrid x:Name="DataGridParticipants" Grid.Row="1" Grid.Column="3" Grid.RowSpan="11" Grid.ColumnSpan="12" AutoGenerateColumns="False"
                   SelectionMode="Single" SelectionUnit="FullRow" CanUserAddRows="False" IsReadOnly="True" MinRowHeight="40" Visibility="Hidden">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Participant" Binding="{Binding Name}" Width="300"  />
+                <DataGridTextColumn Header="Participant" Binding="{Binding Name}" Width="250"  />
+                <DataGridTextColumn Header="Old" Binding="{Binding Old}" Width="50"/>
                 <DataGridTextColumn Header="R1" Binding="{Binding Availability[1]}" Width="50"/>
                 <DataGridTextColumn Header="R2" Binding="{Binding Availability[2]}" Width="50"/>
                 <DataGridTextColumn Header="R3" Binding="{Binding Availability[3]}" Width="50"/>
                 <DataGridTextColumn Header="R4" Binding="{Binding Availability[4]}" Width="50"/>
                 <DataGridTextColumn Header="R5" Binding="{Binding Availability[5]}" Width="50"/>
-                <DataGridTextColumn Header="Old" Binding="{Binding Old}" Width="50"/>
             </DataGrid.Columns>
 
         </DataGrid>

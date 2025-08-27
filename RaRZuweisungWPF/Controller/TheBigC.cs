@@ -12,12 +12,12 @@ namespace RaRZuweisungWPF.Controller
 {
     public class TheBigC : IFController
     {
-        private IFRaRModel model = new RaRModel();
+        private IFRaRModel model;
         private MainWindow mainWindow;
         public string ErrorMessage { get; set; }
         public TheBigC(MainWindow mw)
         {
-            this.model = new RaRModel();
+            this.model = new RaRModel(this);
             this.mainWindow = mw;
             this.ErrorMessage = "";
         }
@@ -29,7 +29,7 @@ namespace RaRZuweisungWPF.Controller
             }
             catch (Exception ex)
             {
-                ErrorMessage = ex.Message;
+                ErrorMessage = ex.ToString();
                 Notify();
             }
         }
@@ -56,7 +56,7 @@ namespace RaRZuweisungWPF.Controller
             }
             catch (Exception ex)
             {
-                ErrorMessage = ex.Message;
+                ErrorMessage = ex.ToString();
                 Notify();
             } 
         }
@@ -77,6 +77,16 @@ namespace RaRZuweisungWPF.Controller
         public void createRounds()
         {
             model.createRounds();
+            /*try
+            {
+                
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.ToString();
+                Notify();
+            }
+            */
         }
 
         public List<Participant> GetParticipants()
@@ -87,7 +97,7 @@ namespace RaRZuweisungWPF.Controller
             }
             catch (Exception ex)
             {
-                ErrorMessage = ex.Message;
+                ErrorMessage = ex.ToString();
                 Notify();
                 return new List<Participant>();
             }
@@ -95,33 +105,36 @@ namespace RaRZuweisungWPF.Controller
 
         public List<RaR2> getRaR2Round(int round)
         {
-            try
+            List<RaR2> rar2s = model.getRaR2Round(round);
+            if (rar2s.Count > 0) { return rar2s; }
+            throw new Exception("Es wurde noch keine RaR Runde erstellt.");
+            /*try
             {
-                List<RaR2> rar2s = model.getRaR2Round(round);
-                if(rar2s.Count > 0) { return rar2s; }
-                throw new Exception("Es wurde noch keine RaR Runde erstellt.");
+
             }
             catch (Exception ex)
             {
-                ErrorMessage = ex.Message;
+                ErrorMessage = ex.ToString();
                 Notify();
                 return new List<RaR2>();
             }
+            */
         }
 
         public List<RaR3> getRaR3Round(int round)
         {
-            try {
-                List<RaR3> rar3s = model.getRaR3Round(round);
-                if (rar3s.Count > 0) { return rar3s; }
-                throw new Exception("Es wurde noch keine RaR Runden erstellt.");
+            List<RaR3> rar3s = model.getRaR3Round(round);
+            if (rar3s.Count == 0) { throw new Exception("Es wurde noch keine RaR Runden erstellt."); }
+            return rar3s;
+            /*try {
+                
             }
             catch (Exception ex)
             {
-                ErrorMessage = ex.Message;
+                ErrorMessage = ex.ToString();
                 Notify();
                 return new List<RaR3>();
-            }
+            }*/
         }
 
         public void RemoveParticipant(Participant participant)
@@ -143,14 +156,26 @@ namespace RaRZuweisungWPF.Controller
             }
             catch (Exception ex)
             {
-                ErrorMessage = ex.Message;
+                ErrorMessage = ex.ToString();
                 Notify();
             }
         }
 
         public void setRoundPlan(bool[] areRounds2er)
         {
-            model.setRoundPlan(areRounds2er);
+            try
+            {
+                model.setRoundPlan(areRounds2er);
+            } catch (Exception ex)
+            {
+                ErrorMessage = ex.ToString();
+                Notify();
+            }
+            
+        }
+
+        public void textShow(string text) {
+            mainWindow.printText(text);
         }
     }
 }

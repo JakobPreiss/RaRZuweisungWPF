@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RaRZuweisungWPF.Model
 {
-    public record RaR3 : RaR
+    public record RaR3 : IFRaR
     {
         public Participant OldParticipant { get; set; }
 
@@ -29,9 +29,11 @@ namespace RaRZuweisungWPF.Model
             if (EitherParticipant == null)
             {
                 return new List<Participant> { OldParticipant, NewParticipant };
-            } else
+            }
+            else
             {
                 return new List<Participant> { OldParticipant, NewParticipant, EitherParticipant };
+            }
         }
     }
 }

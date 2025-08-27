@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -39,10 +40,12 @@ namespace RaRZuweisungWPF.Model
     internal class Assignment
     {
         private DataBaseAccess access;
+        private RaRModel model;
 
-        public Assignment(DataBaseAccess access)
+        public Assignment(DataBaseAccess access, RaRModel model)
         {
             this.access = access;
+            this.model = model;
         }
         /// <summary>
         /// creates the next round (indicated by parameter), makes the assignments and writes them to the Database
@@ -74,69 +77,89 @@ namespace RaRZuweisungWPF.Model
                 }
                 rounds++;
             }*/
-            int maxtries = 300;
+            model.textPrint("");
+            int maxOuterTries = 200;
+            int outerTries = 0;
+            int maxtries = 200;
             int tries = 0;
             bool roundCreationSuccess = false;
             int round = 1;
             int rounds = 5;
-            Dictionary<int, bool> RaR2Rounds = new Dictionary<int, bool> { { 1, true }, { 2, false }, { 3, false }, { 4, true }, { 5, false } };
+            bool [] raR2Rounds = access.getRoundPlan();
+            bool allRoundsSuccess = false;
             //eigentlich access.getRoundPlan()
-            while (tries++ < maxtries && round <= rounds)
+            while(!allRoundsSuccess && outerTries < maxOuterTries)
             {
-                roundCreationSuccess = createRound(round, RaR2Rounds[round], 0);
-                if (roundCreationSuccess)
+                while (tries++ < maxtries && round <= rounds)
                 {
-                    round++;
+                    roundCreationSuccess = createRound(round, raR2Rounds[round - 1], 0);
+                    if (roundCreationSuccess)
+                    {
+                        round++;
+                        roundCreationSuccess = false;
+                    }
+                }
+                if (round < rounds + 1)
+                {
+                    access.resetRaRsAndPairs();
                     roundCreationSuccess = false;
+                    round = 1;
+                    tries = 0;
+                    outerTries++;
+                } else
+                {
+                    allRoundsSuccess = true;
                 }
             }
-
-
         }
-
+        
         //maxtries notwendig? -> verlagern oder wiederholung/reset dadurch einbauen?
         internal bool createRound(int round, bool is2erRound, int howManyDoubleingAllowed)
         {
-            int maxTries = 50;
+            model.textPrint("create Round started");
+            int maxTries = 100;
             int tries = 0;
-            Dictionary<Participant, Participant> pairs = access.readPairings();
+            Dictionary<string, List<Participant>> pairs = access.readPairings();
             List<Participant> participants = access.readParticipants();
             int numberOfParticipants = participants.Count;
             bool doubleingAllowed = !(howManyDoubleingAllowed == 0);
             if (is2erRound)
             {
+                model.textPrint("inside create RaR2");
                 List<RaR2> raR2s = new List<RaR2>();
                 while (raR2s.Count < numberOfParticipants / 2 && tries < maxTries)
                 {
                     RaR2 rar2 = createRaR2(pairs, raR2s, participants, round, doubleingAllowed);
-                    if (rar2 == null) { return false; }
+                    if (rar2 == null) { model.textPrint("RaR2 was null"); return false; }
+                    pairs[rar2.OldParticipant.Name].Add(rar2.NewParticipant);
+                    pairs[rar2.NewParticipant.Name].Add(rar2.OldParticipant);
                     participants.Remove(rar2.NewParticipant);
                     participants.Remove(rar2.OldParticipant);
-                    pairs.Add(rar2.OldParticipant, rar2.NewParticipant);
-                    pairs.Add(rar2.NewParticipant, rar2.OldParticipant);
                     raR2s.Add(rar2);
                     tries++;
                 }
-                if (participants.Count == 1 && !participants[0].Old) { return false; }
+                if (participants.Count == 1 && !participants[0].Old) { model.textPrint("Participant über and wasn't old"); return false; }
                 bool successful = raR2s.Count== numberOfParticipants / 2;
                 if (successful) {
-                    if (howManyDoubleingAllowed > checkRoundsForDoubles(raR2s)) {
+                    if (howManyDoubleingAllowed >= checkRoundsForDoubles(raR2s)) {
                         access.writeRaR(round, raR2s);
                         foreach (RaR2 r in raR2s)
                         {
                             access.writePairing(r.OldParticipant, r.NewParticipant);
                         }
+                        model.textPrint("building and writing of single RaR2 successful");
                         return true;
-                    } else { return false; }
-                } else { return false; }
+                    } else { model.textPrint("there were doubles"); return false; }
+                } else { model.textPrint("unsuccessful RaR2 Round try"); return false; }
                     
             } else
             {
+                model.textPrint("inside create RaR3");
                 List<RaR3> raR3s = new List<RaR3>();
                 int numberOfRaR3s;
                 if (numberOfParticipants % 3 == 2) { numberOfRaR3s = numberOfParticipants / 3 + 1; }
                 else { numberOfRaR3s = numberOfParticipants / 3;  }
-                while(raR3s.Count < numberOfParticipants / 3 && tries < maxTries)
+                while(raR3s.Count < numberOfRaR3s && participants.Count > 0 && tries < maxTries)
                 {
                     RaR3 rar3 = createRaR3(pairs, raR3s, participants, round, doubleingAllowed);
                     if(rar3 == null) { return false; }
@@ -145,13 +168,15 @@ namespace RaRZuweisungWPF.Model
                     if (rar3.EitherParticipant != null)
                     {
                         participants.Remove(rar3.EitherParticipant);
-                        pairs.Add(rar3.NewParticipant, rar3.EitherParticipant);
-                        pairs.Add(rar3.OldParticipant, rar3.EitherParticipant);
-                        pairs.Add(rar3.EitherParticipant, rar3.NewParticipant);
-                        pairs.Add(rar3.EitherParticipant, rar3.OldParticipant);
+                        pairs[rar3.NewParticipant.Name].Add(rar3.EitherParticipant);
+                        pairs[rar3.OldParticipant.Name].Add(rar3.EitherParticipant);
+                        pairs[rar3.EitherParticipant.Name].Add(rar3.NewParticipant);
+                        pairs[rar3.EitherParticipant.Name].Add(rar3.OldParticipant);
                     }
-                    pairs.Add(rar3.OldParticipant, rar3.NewParticipant);
-                    pairs.Add(rar3.NewParticipant, rar3.OldParticipant);
+                    pairs[rar3.OldParticipant.Name].Add(rar3.NewParticipant);
+                    pairs[rar3.NewParticipant.Name].Add(rar3.OldParticipant);
+                    raR3s.Add(rar3);
+
                 } 
                 if (participants.Count == 1)
                 {
@@ -160,16 +185,16 @@ namespace RaRZuweisungWPF.Model
                 bool successful = raR3s.Count == numberOfRaR3s;
                 if (successful)
                 {
-                    if (howManyDoubleingAllowed > checkRoundsForDoubles(raR3s)) {
+                    if (howManyDoubleingAllowed >= checkRoundsForDoubles(raR3s)) {
                         access.writeRaR(round, raR3s);
                         foreach (RaR3 r in raR3s)
                         {
-                            access.writePairing(r.OldParticipant, r.NewParticipant);
                             if(r.EitherParticipant != null)
                             {
-                                access.writePairing(r.NewParticipant, r.EitherParticipant);
-                                access.writePairing(r.OldParticipant, r.EitherParticipant);
+                                access.writePairing(r.EitherParticipant, r.NewParticipant);
+                                access.writePairing(r.EitherParticipant, r.NewParticipant);
                             }
+                            access.writePairing(r.NewParticipant, r.OldParticipant);
                         }
                         return true;
                     }
@@ -181,49 +206,56 @@ namespace RaRZuweisungWPF.Model
 
         }
 
-        internal RaR2 createRaR2(Dictionary<Participant, Participant> pairs, List<RaR2> thisRound, List<Participant> participants, int round, bool doublingAllowed)
+        internal RaR2 createRaR2(Dictionary<string, List<Participant>> pairs, List<RaR2> thisRound, List<Participant> participants, int round, bool doublingAllowed)
         {
             RaR2? rar2 = null;
             int tries = 0;
-            while (rar2 == null && tries < 200)
+            int maxtries = 200;
+            while (rar2 == null && tries < maxtries)
             {
+                model.textPrint("inside create single RaR2");
                 Random random = new Random();
                 Participant old = participants[random.Next(participants.Count)];
-                if(!old.Old || !old.Availability[round]) { tries++; continue; }
+                if(!old.Old || !old.Availability[round]) { tries++; model.textPrint("old wasn't Old"); continue; }
                 Participant newbie = participants[random.Next(participants.Count)];
-                if(newbie.Old || !newbie.Availability[round]) { tries++; continue; }
-                if(participantHasThisRound(newbie, round, thisRound.Cast<RaR>().ToList()) || participantHasThisRound(old, round, thisRound.Cast<RaR>().ToList())) { tries++; continue; }
-                if(!doublingAllowed && checkPairing(old, newbie, pairs)) { tries++; continue; }
+                if(newbie.Old || !newbie.Availability[round]) { tries++; model.textPrint("newbie wasn't New"); continue; }
+                if(participantHasThisRound(newbie, round, thisRound.Cast<IFRaR>().ToList()) || participantHasThisRound(old, round, thisRound.Cast<IFRaR>().ToList())) { tries++; model.textPrint("participant had this round"); continue; }
+                if(!doublingAllowed && checkPairing(old, newbie, pairs)) { tries++; model.textPrint("doubleing in the single pairing"); continue; }
                 tries++;
                 rar2 = new RaR2(old, newbie, round);
             }
+            model.textPrint("returning single RaR2");
             return rar2;
         }
 
-        internal RaR3 createRaR3(Dictionary<Participant, Participant> pairs, List<RaR3> thisRound, List<Participant> participants, int round, bool doublingAllowed)
+        internal RaR3 createRaR3(Dictionary<string, List<Participant>> pairs, List<RaR3> thisRound, List<Participant> participants, int round, bool doublingAllowed)
         {
             RaR3? rar3 = null;
             int tries = 0;
             while (rar3 == null && tries < 100)
             {
                 Random random = new Random();
+                if(participants.Count == 0)
+                {
+                    model.textPrint("war null");
+                }
                 Participant old = participants[random.Next(participants.Count)];
                 if (!old.Old || !old.Availability[round]) { tries++; continue; }
                 Participant newbie = participants[random.Next(participants.Count)];
                 if (newbie.Old || !newbie.Availability[round]) { tries++; continue; }
                 if (participants.Count == 2)
                 {
-                    if (participantHasThisRound(newbie, round, thisRound.Cast<RaR>().ToList()) || participantHasThisRound(old, round, thisRound.Cast<RaR>().ToList())) { tries++; continue; }
+                    if (participantHasThisRound(newbie, round, thisRound.Cast<IFRaR>().ToList()) || participantHasThisRound(old, round, thisRound.Cast<IFRaR>().ToList())) { tries++; continue; }
                     if (!doublingAllowed && checkPairing(old, newbie, pairs)) { tries++; continue; }
                     tries++;
                     rar3 = new RaR3(old, newbie, null, round);
                 } else
                 {
                     Participant either = participants[random.Next(participants.Count)];
-                    if (!either.Availability[round]) { tries++; continue; }
-                    if (participantHasThisRound(newbie, round, thisRound.Cast<RaR>().ToList()) ||
-                        participantHasThisRound(old, round, thisRound.Cast<RaR>().ToList()) ||
-                        participantHasThisRound(either, round, thisRound.Cast<RaR>().ToList())) { tries++; continue; }
+                    if (!either.Availability[round] || either.Equals(old) || either.Equals(newbie)) { tries++; continue; }
+                    if (participantHasThisRound(newbie, round, thisRound.Cast<IFRaR>().ToList()) ||
+                        participantHasThisRound(old, round, thisRound.Cast<IFRaR>().ToList()) ||
+                        participantHasThisRound(either, round, thisRound.Cast<IFRaR>().ToList())) { tries++; continue; }
                     if (!doublingAllowed && (checkPairing(old, newbie, pairs) || checkPairing(old, either, pairs) || checkPairing(newbie, either, pairs))) { tries++; continue; }
                     tries++;
                     rar3 = new RaR3(old, newbie, either, round);
@@ -232,10 +264,10 @@ namespace RaRZuweisungWPF.Model
             return rar3;
         }
 
-        internal bool participantHasThisRound(Participant participant, int round, List<RaR> rars)
+        internal bool participantHasThisRound(Participant participant, int round, List<IFRaR> rars)
         {
             bool hasRound = false;
-            foreach (RaR rar in rars)
+            foreach (IFRaR rar in rars)
             {
                 if(rar.GetParticipants().Contains(participant)) {  hasRound = true; break; }
             }
@@ -291,17 +323,17 @@ namespace RaRZuweisungWPF.Model
         /// <param name="participant2">second participant</param>
         /// <returns>if the two participants have been matched together already</returns>
         /// <exception cref="NotImplementedException"></exception>
-        private bool checkPairing(Participant participant1, Participant participant2, Dictionary<Participant, Participant> pairs)
+        private bool checkPairing(Participant participant1, Participant participant2, Dictionary<string, List<Participant>> pairs)
         {
             bool arePaired = false;
-            if (pairs.ContainsKey(participant1))
+            if (pairs.ContainsKey(participant1.Name))
             {
-                arePaired = pairs[participant1].Equals(participant2);
+                arePaired = pairs[participant1.Name].Contains(participant2);
                 return arePaired;
             }
-            if (pairs.ContainsKey(participant2))
+            if (pairs.ContainsKey(participant2.Name))
             {
-                arePaired = pairs[participant2].Equals(participant1);
+                arePaired = pairs[participant2.Name].Contains(participant1);
                 return arePaired;
             }
             return arePaired;
@@ -315,7 +347,7 @@ namespace RaRZuweisungWPF.Model
         private int checkRoundsForDoubles(List<RaR2> rar2Round)
         {
             int doubles = 0;
-            Dictionary<Participant, Participant> pairs = access.readPairings();
+            Dictionary<string, List<Participant>> pairs = access.readPairings();
             foreach (RaR2 r in rar2Round)
             {
                 if(checkPairing(r.OldParticipant, r.NewParticipant, pairs)) { doubles++; }
@@ -332,7 +364,7 @@ namespace RaRZuweisungWPF.Model
         private int checkRoundsForDoubles(List<RaR3> rar3Round)
         {
             int doubles = 0;
-            Dictionary<Participant, Participant> pairs = access.readPairings();
+            Dictionary<string, List<Participant>> pairs = access.readPairings();
             foreach (RaR3 r in rar3Round)
             {
                 if(checkPairing(r.OldParticipant, r.NewParticipant, pairs)) {doubles ++;}

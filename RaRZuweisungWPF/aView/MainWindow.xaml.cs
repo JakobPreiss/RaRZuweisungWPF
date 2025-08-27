@@ -30,9 +30,31 @@ namespace RaRZuweisungWPF.aView
 
             var testParticipants = new List<Participant>
             {
-                new Participant("Hannah", true, true, true, true, false, true),
-                new Participant("Elli", false, false, true, true, false, true),
-                new Participant("Konstantin", true, false, false, true, false, true),
+                new Participant("Hannah", true, true, true, true, true, true),
+                new Participant("Elli", true, true, true, true, true, true),
+                new Participant("Paul", true, true, true, true, true, true),
+                new Participant("Jake", true, true, true, true, true, true),
+                new Participant("Petra", true, true, true, true, true, true),
+                new Participant("Laurin", true, true, true, true, true, true),
+                new Participant("Gregor", true, true, true, true, true, true),
+                new Participant("Sina", true, true, true, true, true, true),
+                new Participant("Johanna", true, true, true, true, true, true),
+                new Participant("Gloria", true, true, true, true, true, true),
+                new Participant("Fabienne", true, true, true, true, true, true),
+                new Participant("Eline", true, true, true, true, true, true),
+
+                new Participant("Konstantin", false, true, true, true, true, true),
+                new Participant("Kirsten", false, true, true, true, true, true),
+                new Participant("Janis", false, true, true, true, true, true),
+                new Participant("Alex", false, true, true, true, true, true),
+                new Participant("Pascal", false, true, true, true, true, true),
+                new Participant("Phillipe", false, true, true, true, true, true),
+                new Participant("Ari", false, true, true, true, true, true),
+                new Participant("Paulina", false, true, true, true, true, true),
+                new Participant("jana", false, true, true, true, true, true),
+                new Participant("Anja", false, true, true, true, true, true),
+                new Participant("Klaus", false, true, true, true, true, true),
+                new Participant("Viktor", false, true, true, true, true, true)
             };
 
             foreach (Participant participant in testParticipants)
@@ -107,7 +129,9 @@ namespace RaRZuweisungWPF.aView
                 {
                     DataGridRaR2.ItemsSource = controller.getRaR2Round(round);
                     DataGridParticipants.Visibility = Visibility.Hidden;
-                    DataGridRaR2.Visibility = Visibility.Hidden;
+                    DataGridRaR3.Visibility = Visibility.Hidden;
+                    //tracking.Visibility = Visibility.Hidden;
+                    //scrollV.Visibility = Visibility.Hidden;
                     DataGridRaR2.Visibility = Visibility.Visible;
                 }
                 else
@@ -115,6 +139,8 @@ namespace RaRZuweisungWPF.aView
                     DataGridRaR3.ItemsSource = controller.getRaR3Round(round);
                     DataGridParticipants.Visibility = Visibility.Hidden;
                     DataGridRaR2.Visibility= Visibility.Hidden;
+                    //tracking.Visibility = Visibility.Hidden;
+                    //scrollV.Visibility = Visibility.Hidden;
                     DataGridRaR3.Visibility = Visibility.Visible;
                 }
             } else
@@ -122,11 +148,6 @@ namespace RaRZuweisungWPF.aView
                 MessageBox.Show("Enter the Round first (upper right corner)");
             }
             
-        }
-
-        private void Create_Rounds(object sender, RoutedEventArgs e)
-        {
-            controller.createRounds();
         }
 
         private void SetRoundPlan(object sender, RoutedEventArgs e)
@@ -147,5 +168,18 @@ namespace RaRZuweisungWPF.aView
         {
 
         }
+
+        private void Create_Rounds_Click(object sender, RoutedEventArgs e)
+        {
+
+            controller.createRounds();
+            DataGridParticipants.Visibility = Visibility.Hidden;
+        }
+
+        public void printText(string text)
+        {
+            //tracking.Text += text + "\n";
+        }
+
     }
 }
