@@ -1,26 +1,29 @@
-﻿<Window x:Class="RaRZuweisungWPF.aView.CreatingRoundsWindow"
+﻿<Window x:Class="RaRZuweisungWPF.aView.AreUSure"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RaRZuweisungWPF.aView"
         mc:Ignorable="d"
-        Title="CreatingRoundsWindow" Height="150" Width="250">
+        Title="AreUSure" Height="250" Width="350">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="120"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="120"/>
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
-            <RowDefinition Height="*" />
+            <RowDefinition Height="100"/>
             <RowDefinition Height="20"/>
-            <RowDefinition Height="25"/>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
-        <Label x:Name="CreatingInfos" Grid.Column="1" Grid.Row="1" HorizontalContentAlignment="Center" Content="Creating Rounds"/>
-        <Button x:Name="Closing" Content="Close" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" Visibility="Hidden" Click="Closing_Click"/>
+        <Label Content="Are you Sure?" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" FontSize="50"/>
+        <Button x:Name="Affirming" Content="Yes" Grid.Column="1" Grid.Row="3" Click="Affirming_Click"/>
+        <Button x:Name="Canceling" Content="Cancel" Grid.Column="3" Grid.Row="3" Click="Canceling_Click"/>
 
     </Grid>
 </Window>

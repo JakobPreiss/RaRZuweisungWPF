@@ -23,10 +23,10 @@
         </Grid.RowDefinitions>
         <Label Content="Welche Runden sind 2-er Runden?" Grid.Row="1" Grid.Column="1"/>
         <StackPanel x:Name="RoundStackBox" Orientation="Horizontal" Grid.Row="3" Grid.Column="1">
-            <CheckBox x:Name="FirstRoundDef" Content="1. Runde" Margin="0,0,20,0"/>
+            <CheckBox x:Name="FirstRoundDef" Content="1. Runde" Margin="0,0,20,0" IsChecked="True"/>
             <CheckBox x:Name="SecondRoundDef" Content="2. Runde" Margin="0,0,20,0"/>
             <CheckBox x:Name="ThirdRoundDef" Content="3. Runde" Margin="0,0,20,0"/>
-            <CheckBox x:Name="FourthRoundDef" Content="4. Runde" Margin="0,0,20,0"/>
+            <CheckBox x:Name="FourthRoundDef" Content="4. Runde" Margin="0,0,20,0" IsChecked="True"/>
             <CheckBox x:Name="FithRoundDef" Content="5. Runde"/>
         </StackPanel>
         <Button x:Name="RowDefinitionsButton" Content="Select Round Plan" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="5" Click="RowDefinitionsButton_Click"/>

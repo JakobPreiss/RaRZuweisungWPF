@@ -76,17 +76,16 @@ namespace RaRZuweisungWPF.Controller
 
         public void createRounds()
         {
-            model.createRounds();
-            /*try
+
+            try
             {
-                
+                model.createRounds();
             }
             catch (Exception ex)
             {
                 ErrorMessage = ex.ToString();
                 Notify();
             }
-            */
         }
 
         public List<Participant> GetParticipants()
@@ -105,12 +104,11 @@ namespace RaRZuweisungWPF.Controller
 
         public List<RaR2> getRaR2Round(int round)
         {
-            List<RaR2> rar2s = model.getRaR2Round(round);
-            if (rar2s.Count > 0) { return rar2s; }
-            throw new Exception("Es wurde noch keine RaR Runde erstellt.");
-            /*try
+            try
             {
-
+                List<RaR2> rar2s = model.getRaR2Round(round);
+                if (rar2s.Count > 0) { return rar2s; }
+                throw new Exception("Es wurde noch keine RaR2 Runde erstellt.");
             }
             catch (Exception ex)
             {
@@ -118,23 +116,21 @@ namespace RaRZuweisungWPF.Controller
                 Notify();
                 return new List<RaR2>();
             }
-            */
         }
 
         public List<RaR3> getRaR3Round(int round)
         {
-            List<RaR3> rar3s = model.getRaR3Round(round);
-            if (rar3s.Count == 0) { throw new Exception("Es wurde noch keine RaR Runden erstellt."); }
-            return rar3s;
-            /*try {
-                
+            try {
+                List<RaR3> rar3s = model.getRaR3Round(round);
+                if (rar3s.Count == 0) { throw new Exception("Es wurde noch keine RaR3 Runden erstellt."); }
+                return rar3s;
             }
             catch (Exception ex)
             {
                 ErrorMessage = ex.ToString();
                 Notify();
                 return new List<RaR3>();
-            }*/
+            }
         }
 
         public void RemoveParticipant(Participant participant)

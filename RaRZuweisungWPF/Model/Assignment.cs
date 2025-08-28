@@ -40,12 +40,10 @@ namespace RaRZuweisungWPF.Model
     internal class Assignment
     {
         private DataBaseAccess access;
-        private RaRModel model;
 
-        public Assignment(DataBaseAccess access, RaRModel model)
+        public Assignment(DataBaseAccess access)
         {
             this.access = access;
-            this.model = model;
         }
         /// <summary>
         /// creates the next round (indicated by parameter), makes the assignments and writes them to the Database
@@ -77,14 +75,13 @@ namespace RaRZuweisungWPF.Model
                 }
                 rounds++;
             }*/
-            model.textPrint("");
             int maxOuterTries = 200;
             int outerTries = 0;
             int maxtries = 200;
             int tries = 0;
             bool roundCreationSuccess = false;
             int round = 1;
-            int rounds = 1;
+            int rounds = 5;
             bool [] raR2Rounds = access.getRoundPlan();
             bool allRoundsSuccess = false;
             while(!allRoundsSuccess && outerTries < maxOuterTries)
@@ -110,13 +107,16 @@ namespace RaRZuweisungWPF.Model
                     allRoundsSuccess = true;
                 }
             }
+            if(!allRoundsSuccess)
+            {
+                throw new Exception("Rundenerstellung ist fehlgeschlagen");
+            }
         }
         
         //maxtries notwendig? -> verlagern oder wiederholung/reset dadurch einbauen?
         internal bool createRound(int round, bool is2erRound, int howManyDoubleingAllowed)
         {
-            model.textPrint("create Round started");
-            int maxTries = 100;
+            int maxTries = 200;
             int tries = 0;
             Dictionary<string, List<Participant>> pairs = access.readPairings();
             List<Participant> participants = access.readParticipants();
@@ -124,7 +124,6 @@ namespace RaRZuweisungWPF.Model
             bool doubleingAllowed = !(howManyDoubleingAllowed == 0);
             if (is2erRound)
             {
-                model.textPrint("inside create RaR2");
                 List<RaR2> raR2s = new List<RaR2>();
                 int newParticipants = 0;
                 foreach (Participant p in participants) { if (!p.Old) { newParticipants++; } }
@@ -154,14 +153,12 @@ namespace RaRZuweisungWPF.Model
                         {
                             access.writePairing(r.OldParticipant, r.NewParticipant);
                         }
-                        model.textPrint("building and writing of single RaR2 successful");
                         return true;
-                    } else { model.textPrint("there were doubles"); return false; }
-                } else { model.textPrint("unsuccessful RaR2 Round try"); return false; }
+                    } else { return false; }
+                } else {  return false; }
                     
             } else
             {
-                model.textPrint("inside create RaR3");
                 List<RaR3> raR3s = new List<RaR3>();
                 int numberOfRaR3s;
                 if (numberOfParticipants % 3 == 2) { numberOfRaR3s = numberOfParticipants / 3 + 1; }
@@ -189,6 +186,10 @@ namespace RaRZuweisungWPF.Model
                 {
                     if (!participants[0].Old) { return false; }
                 }
+                if(participants.Count > 1)
+                {
+                    return false;
+                }
                 bool successful = raR3s.Count == numberOfRaR3s;
                 if (successful)
                 {
@@ -199,7 +200,7 @@ namespace RaRZuweisungWPF.Model
                             if(r.EitherParticipant != null)
                             {
                                 access.writePairing(r.EitherParticipant, r.NewParticipant);
-                                access.writePairing(r.EitherParticipant, r.NewParticipant);
+                                access.writePairing(r.EitherParticipant, r.OldParticipant); 
                             }
                             access.writePairing(r.NewParticipant, r.OldParticipant);
                         }

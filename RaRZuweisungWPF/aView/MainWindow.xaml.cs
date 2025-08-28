@@ -26,7 +26,7 @@ namespace RaRZuweisungWPF.aView
             //TuiTextBlock.Text=  c.exampleMethod();
             controller = new TheBigC(this);
 
-            controller.resetDatabase();
+            /*controller.resetDatabase();
 
             var testParticipants = new List<Participant>
             {
@@ -60,21 +60,7 @@ namespace RaRZuweisungWPF.aView
             foreach (Participant participant in testParticipants)
             {
                 controller.AddParticipant(participant);
-            }
-
-            /*RaR3 testRaR3 = new RaR3(testParticipants[0], testParticipants[1], testParticipants[2], 1);
-            List<RaR3> test3List = new List<RaR3>();
-            test3List.Add(testRaR3);
-            DataGridRaR3.ItemsSource = test3List;
-            //DataGridRaR3.Visibility = Visibility.Visible;
-
-            RaR2 testRaR2 = new RaR2(testParticipants[1], testParticipants[0], 1);
-            List<RaR2> test2List = new List<RaR2>();
-            test2List.Add(testRaR2);
-            DataGridRaR2.ItemsSource = test2List;
-            //DataGridRaR2.Visibility = Visibility.Visible;
-            */
-
+            }*/
 
             Show_Participants_Click(this, new RoutedEventArgs());
         }
@@ -117,7 +103,8 @@ namespace RaRZuweisungWPF.aView
 
         private void Reset_DataBase_Click(object sender, RoutedEventArgs e)
         {
-            controller.resetDatabase();
+            AreUSure areUSure = new AreUSure(controller);
+            areUSure.Show();
         }
 
         private void Show_Round_Click(object sender, RoutedEventArgs e)

@@ -16,7 +16,7 @@ namespace RaRZuweisungWPF.Model
         public RaRModel(TheBigC c)
         {
             access = new DataBaseAccess();
-            assignment = new Assignment(access, this);
+            assignment = new Assignment(access);
             controller = c;
         }
         public void changeAvailability(Participant participant, int round)
