@@ -37,7 +37,7 @@ namespace RaRZuweisungWPF.Model
      *      create 2-er or 3-er groups with set max tries for all rounds with least doubleing
      *          
      */
-    internal class Assignment
+    public class Assignment
     {
         private DataBaseAccess access;
 
@@ -290,7 +290,7 @@ namespace RaRZuweisungWPF.Model
         /// <param name="round">identifies the round that should be checked</param>
         /// <returns>if the round is correctly assigned</returns>
         /// <exception cref="NotImplementedException"></exception>
-        private bool checkIfRoundIsFine(int round)
+        public bool checkIfRoundIsFine(int round)
         {
             List<RaR2> rar2round = access.readRaR2Round(round);
             if (rar2round.Count > 0)
@@ -348,7 +348,7 @@ namespace RaRZuweisungWPF.Model
          /// <param name="rar2Round">List of RaRs to be checked</param>
          /// <returns>Number of already paired participants that are paired again</returns>
          /// <exception cref="NotImplementedException"></exception>
-        private int checkRoundsForDoubles(List<RaR2> rar2Round)
+        public int checkRoundsForDoubles(List<RaR2> rar2Round)
         {
             int doubles = 0;
             Dictionary<string, List<Participant>> pairs = access.readPairings();
@@ -365,7 +365,7 @@ namespace RaRZuweisungWPF.Model
         /// <param name="rar3Round">List of RaRs to be checked</param>
         /// <returns>Number of already paired participants that are paired again</returns>
         /// <exception cref="NotImplementedException"></exception>
-        private int checkRoundsForDoubles(List<RaR3> rar3Round)
+        public int checkRoundsForDoubles(List<RaR3> rar3Round)
         {
             int doubles = 0;
             Dictionary<string, List<Participant>> pairs = access.readPairings();

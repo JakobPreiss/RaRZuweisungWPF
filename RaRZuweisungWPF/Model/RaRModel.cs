@@ -10,8 +10,8 @@ namespace RaRZuweisungWPF.Model
     public class RaRModel : IFRaRModel
     {
         private DataBaseAccess access;
-        private Assignment assignment;
-        private TheBigC controller;
+        public Assignment assignment { get; }
+        public TheBigC? controller { get; set; }
 
         public RaRModel(TheBigC c)
         {
@@ -19,6 +19,14 @@ namespace RaRZuweisungWPF.Model
             assignment = new Assignment(access);
             controller = c;
         }
+
+        public RaRModel(Assignment a, DataBaseAccess d)
+        {
+            access = d;
+            assignment = a;
+        }
+
+
         public void changeAvailability(Participant participant, int round)
         {
             access.changeAvailability(participant, round);

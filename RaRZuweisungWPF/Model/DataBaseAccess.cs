@@ -10,7 +10,7 @@ using Microsoft.Data.Sqlite;
 
 namespace RaRZuweisungWPF.Model
 {
-    internal class DataBaseAccess
+    public class DataBaseAccess
     {
         private string connectionstring;
 

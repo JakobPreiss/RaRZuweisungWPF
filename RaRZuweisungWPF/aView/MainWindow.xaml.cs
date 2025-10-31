@@ -26,7 +26,7 @@ namespace RaRZuweisungWPF.aView
             //TuiTextBlock.Text=  c.exampleMethod();
             controller = new TheBigC(this);
 
-            /*controller.resetDatabase();
+            controller.resetDatabase();
 
             var testParticipants = new List<Participant>
             {
@@ -38,10 +38,10 @@ namespace RaRZuweisungWPF.aView
                 new Participant("Laurin", true, true, true, true, true, true),
                 new Participant("Gregor", true, true, true, true, true, true),
                 new Participant("Sina", true, true, true, true, true, true),
-                new Participant("Johanna", true, true, true, true, true, true),
-                new Participant("Gloria", true, true, true, true, true, true),
-                new Participant("Fabienne", true, true, true, true, true, true),
-                new Participant("Eline", true, true, true, true, true, true),
+                //new Participant("Johanna", true, true, true, true, true, true),
+                //new Participant("Gloria", true, true, true, true, true, true),
+                //new Participant("Fabienne", true, true, true, true, true, true),
+                //new Participant("Eline", true, true, true, true, true, true),
 
                 //new Participant("Konstantin", false, true, true, true, true, true),
                 new Participant("Kirsten", false, true, true, true, true, true),
@@ -60,7 +60,7 @@ namespace RaRZuweisungWPF.aView
             foreach (Participant participant in testParticipants)
             {
                 controller.AddParticipant(participant);
-            }*/
+            }
 
             Show_Participants_Click(this, new RoutedEventArgs());
         }
